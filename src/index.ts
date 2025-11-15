@@ -4,7 +4,15 @@ import dotenv from "dotenv"
 dotenv.config();
 const PORT = process.env.PORT
 
-const subscriber = redis.createClient();
+const subscriber = redis.createClient(
+    {
+  socket: {
+    host: process.env.REDIS_HOST || "redis",
+    port: Number(process.env.REDIS_PORT) || 6379,
+  }
+}
+
+);
 subscriber.connect();
 subscriber.on("ready", () => console.log("Redis connected"));
 
